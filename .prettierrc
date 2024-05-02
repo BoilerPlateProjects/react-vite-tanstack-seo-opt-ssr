@@ -1,0 +1,36 @@
+{
+  "arrowParens": "avoid",
+  "bracketSpacing": true,
+  "embeddedLanguageFormatting": "auto",
+  "htmlWhitespaceSensitivity": "css",
+  "insertPragma": false,
+  "jsxBracketSameLine": false,
+  "jsxSingleQuote": false,
+  "printWidth": 100,
+  "proseWrap": "preserve",
+  "quoteProps": "consistent",
+  "requirePragma": false,
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "none",
+  "useTabs": false,
+  "vueIndentScriptAndStyle": false,
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-packagejson",
+    "prettier-plugin-tailwindcss"
+  ],
+  "importOrder": [
+    "^node:(.*)$",
+    "^([of]s|https?|path|url|crypto|stream|buffer|util|querystring|events|assert|constants||zlib|tty|child_process|cluster|dgram|dns|domain|net|readline|repl|tls|inspector|v8|vm|perf_hooks|worker_threads|async_hooks|punycode|http2|perf_hooks|assert)(/.*$|$)",
+    "^([^.@]*)$",
+    "^@(.+)/(.*)$",
+    "^@/(.*)$",
+    "^[./](.*)(?<!\\.css)$",
+    "\\.css$"
+  ],
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
