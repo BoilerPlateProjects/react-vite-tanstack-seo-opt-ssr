@@ -3,9 +3,11 @@ import { PartialDeep } from "type-fest";
 
 import { createRouter } from "../../router";
 
-interface SSRContextProps {
+export interface SSRContextProps {
   title: string;
-  script: string[];
+  scripts: string[];
+  headScripts: string[];
+  styles: string[];
   meta: Record<string, string>;
   router: ReturnType<typeof createRouter>;
 }

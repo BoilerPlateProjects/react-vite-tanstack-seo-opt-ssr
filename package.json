@@ -4,18 +4,20 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run build:client && npm run build:server",
+    "build": "yarn build:client && yarn build:server",
     "build:client": "vite build --ssrManifest --outDir build/client",
     "build:server": "vite build --ssr src/entry-server.tsx --outDir build/server",
-    "dev": "node server",
-    "preview": "cross-env NODE_ENV=production node server"
+    "dev": "vite-node server/dev",
+    "preview": "cross-env NODE_ENV=production node server/prod.js"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.31.6",
     "@tanstack/react-router-server": "^1.31.6",
     "compression": "^1.7.4",
     "express": "^4.19.2",
+    "html-minifier": "^4.0.0",
     "node-fetch": "^3.3.2",
+    "node-html-parser": "^6.1.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sirv": "^2.0.4"
@@ -24,7 +26,9 @@
     "@tanstack/router-devtools": "^1.31.6",
     "@tanstack/router-vite-plugin": "^1.30.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/compression": "^1.7.5",
     "@types/express": "^4.17.21",
+    "@types/html-minifier": "^4",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
@@ -36,6 +40,7 @@
     "type-fest": "^4.18.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.10",
+    "vite-node": "^1.5.3",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "packageManager": "yarn@4.2.1"
