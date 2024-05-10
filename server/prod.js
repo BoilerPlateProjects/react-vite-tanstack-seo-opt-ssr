@@ -1,25 +1,18 @@
-import fs from "node:fs/promises";
-
 import compression from "compression";
 import express from "express";
 import sirv from "sirv";
 
 const port = process.env.PORT || 5173;
 const base = process.env.BASE || "/";
-const templateHtml = await fs.readFile("./build/client/index.html", "utf-8");
-const app = express();
 
-app
+express()
   .use(compression())
   .use(base, sirv("./build/client", { extensions: [] }))
   .use("*", async (req, res) => {
     try {
       const url = req.originalUrl.replace(base, "");
-
-      const template = templateHtml;
-      const renderSSR = (await import("../build/server/entry-server.js")).render;
-
-      const html = await renderSSR(url, template);
+      const { render } = await import("../build/server/entry-server.js");
+      const html = await render(url);
       res.end(html);
     } catch (e) {
       if (e instanceof Error) {
