@@ -1,9 +1,13 @@
+import { readFile } from "node:fs/promises";
+
 import compression from "compression";
 import express from "express";
 import sirv from "sirv";
 
 const port = process.env.PORT || 5173;
 const base = process.env.BASE || "/";
+
+const template = await readFile("./build/client/index.html", "utf-8");
 
 express()
   .use(compression())
@@ -12,7 +16,7 @@ express()
     try {
       const url = req.originalUrl.replace(base, "");
       const { render } = await import("../build/server/entry-server.js");
-      const html = await render(url);
+      const html = await render(url, template);
       res.end(html);
     } catch (e) {
       if (e instanceof Error) {

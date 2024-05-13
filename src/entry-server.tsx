@@ -1,5 +1,6 @@
 import { Transform } from "node:stream";
 
+import { HTMLElement, parse } from "node-html-parser";
 import { StrictMode } from "react";
 import { renderToPipeableStream } from "react-dom/server";
 
@@ -10,7 +11,7 @@ import { createRouter } from "./router";
 
 const ABORT_DELAY = 10000;
 
-export async function render(url: string) {
+export async function render(url: string, template: string) {
   const router = createRouter();
   const memoryHistory = createMemoryHistory({ initialEntries: [url] });
   router.update({ history: memoryHistory });
@@ -36,7 +37,18 @@ export async function render(url: string) {
           });
 
           transformStream.on("finish", () => {
-            resolve(html);
+            const root = parse(template);
+            const app = new HTMLElement("div", { id: "app" });
+            app.set_content(html);
+            const body = root.querySelector("body");
+            if (!body) {
+              reject(new Error("No body element"));
+              return;
+            }
+            const bodyContent = body.innerHTML;
+            body.set_content(app.toString() + bodyContent);
+            const transformedHtml = root.toString();
+            resolve(transformedHtml);
           });
 
           pipe(transformStream);

@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+
 import express from "express";
 import { createServer } from "vite";
 
@@ -15,8 +17,10 @@ express()
   .use("*", async (req, res) => {
     try {
       const url = req.originalUrl.replace(base, "");
-      const { render } = await vite!.ssrLoadModule("/src/entry-server.tsx");
-      const html = await render(url);
+      const template = await readFile("index.html", "utf-8");
+      const { render } = await vite.ssrLoadModule("/src/entry-server.tsx");
+      const transformedHtml = await render(url, template);
+      const html = await vite.transformIndexHtml(url, transformedHtml);
       res.end(html);
     } catch (e) {
       if (e instanceof Error) {
