@@ -37,18 +37,18 @@ export async function render(url: string, template: string) {
           });
 
           transformStream.on("finish", () => {
-            const root = parse(template);
-            const app = new HTMLElement("div", { id: "app" });
-            app.set_content(html);
+            const root = parse(template, { comment: true });
             const body = root.querySelector("body");
             if (!body) {
               reject(new Error("No body element"));
               return;
             }
             const bodyContent = body.innerHTML;
+            const app = new HTMLElement("div", { id: "app" });
+            app.set_content(`<app></app>`);
             body.set_content(app.toString() + bodyContent);
             const transformedHtml = root.toString();
-            resolve(transformedHtml);
+            resolve(transformedHtml.replace("<app></app>", html));
           });
 
           pipe(transformStream);
